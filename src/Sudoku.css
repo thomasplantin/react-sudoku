@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #61dafb;
 }
 
 .App-link {
@@ -46,7 +46,14 @@
 .Table-cell {
   height: 40px;
   width: 40px;
-  /* border: 1px solid black; */
+}
+
+.Table-cell-bold-right {
+  border-right:5px solid #282c34;
+}
+
+.Table-cell-bold-bottom {
+  border-bottom:5px solid #282c34;
 }
 
 .Cell-input {
