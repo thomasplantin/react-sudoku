@@ -1,26 +1,24 @@
 import React, { Component } from 'react'
 
-
-function handleClick(e) {
-    console.log(e);
-}
-
 class Cell extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {isToggleOn: true};
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick() {
-        alert(this.props.cell.coordinate);
+        this.setState(state => ({
+            isToggleOn: !state.isToggleOn
+        }));
     }
 
     render() {
         if(this.props.cell.mutable) {
             return (
                 <td className={`Table-cell ${this.props.cell.bold}`}>
-                    <input className="Cell-input" type="button" value={this.props.cell.coordinate} onClick={this.handleClick} />
+                    <input className="Cell-input" type="button" value={this.state.isToggleOn ? this.props.cell.value : 'N'} onClick={this.handleClick} />
                 </td>
             );
         } else {
