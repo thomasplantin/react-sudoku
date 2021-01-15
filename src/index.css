@@ -10,4 +10,11 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+  font-size: small;
+}
+
+.footer {
+  background-color: #282c34;
+  text-align: center;
+  color: #61dafb;
 }
