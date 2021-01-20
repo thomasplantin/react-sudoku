@@ -39,6 +39,10 @@
 
 /* My additions */
 
+.Main-title {
+  font-family: 'Potta One', cursive;
+}
+
 .Table-body {
   background-color: white;
 }
@@ -60,4 +64,30 @@
   width: 100%;
   height: 100%;
   color: black;
+}
+
+.Cell-immutable {
+  font-weight: bold;
+}
+
+.Cell-clicked {
+  background-color: #9d0191;
+}
+
+.Options {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.Num-btn {
+  font-family: 'Potta One', cursive;
+  margin: 0 5px;
+  background-color: #64dfdf;
+  border: 0;
+}
+
+.Num-btn:hover {
+  background-color: #6930c3;
+  color: white;
 }

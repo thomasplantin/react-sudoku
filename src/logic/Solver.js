@@ -172,7 +172,7 @@ export function stripValues(grid) {
         }
         counter = 0;
         solveGrid(copyGrid);
-        if(counter != 1) {
+        if(counter !== 1) {
             grid[row][col] = backup;
             attempts--;
         }
