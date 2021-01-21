@@ -53,13 +53,14 @@ class Table extends Component {
         super(props);
         this.state = {
             rows: rows,
-            selectedNum: this.props.state.selectedNum
+            selectedCoordinate: ' ',
+            selectedCoordinateTS: ' '
         }
         this.muteAll = this.muteAll.bind(this);
-        this.aimed = this.aimed.bind(this);
     }
 
     muteAll(exceptCoordinate) {
+        // this.props.activateCell(exceptCoordinate);
         for(var row of this.state.rows) {
             for(var cell of row.cells) {
                 if(cell.coordinate === exceptCoordinate) {
@@ -69,37 +70,38 @@ class Table extends Component {
                 }
             }
         }
+        // Avoid reactivating the num bar on every render
         if(firstTouch) {
             this.props.activateNumBar(); // Activate Numbers bar
             firstTouch = false;
         }
         // Render the page by changing the state of rows
         this.setState(state => ({
-            rows: state.rows
+            rows: state.rows,
+            selectedCoordinate: exceptCoordinate,
+            selectedCoordinateTS: Date.now()
         }));
     }
 
-    aimed(coordinate) {
+    updateCell(coordinate, value) {
         for(var row of this.state.rows) {
             for(var cell of row.cells) {
                 if(cell.coordinate === coordinate) {
-                    cell.value = this.props.state.selectedNum;
-                    break;
-                } 
+                    cell.value = value;
+                }
             }
         }
-        // Render the page by changing the state of rows
-        this.setState(state => ({
-            rows: state.rows
-        }));
     }
 
     render() {
+        if(this.props.state.selectedNumTS > this.state.selectedCoordinateTS) {
+            this.updateCell(this.state.selectedCoordinate, this.props.state.selectedNum);
+        }
         return (
             <table>
                 <tbody id="table-body" className="Table-body">
                     {this.state.rows.map((row) => {
-                        return <Row key={row.key} cells={row.cells} muteAll={this.muteAll} aimed={this.aimed} />
+                        return <Row key={row.key} cells={row.cells} muteAll={this.muteAll} />
                     })}
                 </tbody>
             </table>

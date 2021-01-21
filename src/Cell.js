@@ -10,7 +10,6 @@ class Cell extends Component {
     handleClick() {
         // Pass functions to Parent (Row.js)
         this.props.muteAll(this.props.cell.coordinate);
-        this.props.aimed(this.props.cell.coordinate);
     }
 
     render() {
