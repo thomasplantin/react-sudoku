@@ -9,6 +9,7 @@ class Options extends Component {
 
     numClick(num) {
         this.props.state.selectedNum = num;
+        this.props.state.selectedNumTS = Date.now();
         this.props.numClick();
     }
 

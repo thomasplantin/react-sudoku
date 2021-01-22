@@ -71,7 +71,12 @@
 }
 
 .Cell-clicked {
-  background-color: #9d0191;
+  background-color: #ea2c62;
+  color: #eeeded;
+}
+
+.Cell-involved {
+  background-color: #61dafb;
 }
 
 .Options {

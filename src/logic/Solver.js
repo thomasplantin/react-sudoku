@@ -179,3 +179,51 @@ export function stripValues(grid) {
     }
 }
 
+export function isValidBoard(board) {
+    var tabRows = {};
+    var tabCols = {};
+    var tabSquares = {};
+    for(var row of board) {
+        for(var cell of row.cells) {
+            if(cell.value !== ' ') {
+                console.log(cell.value);
+                let rowNumber = parseInt(cell.coordinate.charAt(0));
+                let colNumber = parseInt(cell.coordinate.charAt(2));
+                // Check that in each row there are no 2 cells with repeating values
+                if(!(rowNumber in tabRows)) {
+                    tabRows[rowNumber] = [];
+                    tabRows[rowNumber].push(cell.value);
+                } else if(!(cell.value in tabRows[rowNumber])){
+                    tabRows[rowNumber].push(cell.value);
+                } else {
+                    console.log("Problem in rows", cell.value, cell.coordinate);
+                    return false;
+                }
+                // Check that in each column there are no 2 cells with repeating values
+                if(!(colNumber in tabCols)) {
+                    tabCols[colNumber] = [];
+                    tabCols[colNumber].push(cell.value);
+                } else if(!(cell.value in tabCols[colNumber])) {
+                    tabCols[colNumber].push(cell.value);
+                } else {
+                    console.log("Problem in cols", cell.value, cell.coordinate);
+                    return false;
+                }
+                // Check that in each 3x3 square there are no 2 cells with repeating values
+                let x = Math.floor(colNumber/3);
+                let y = Math.floor(rowNumber/3);
+                let squareKey = x.toString()+y.toString();
+                if(!(squareKey in tabSquares)) {
+                    tabSquares[squareKey] = [];
+                    tabSquares[squareKey].push(cell.value);
+                } else if(!(cell.value in tabSquares[squareKey])) {
+                    tabSquares[squareKey].push(cell.value);
+                } else{
+                    console.log("Problem in squares", cell.value, cell.coordinate);
+                    return false
+                }
+            }
+        }
+    }
+    return true;
+}

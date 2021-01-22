@@ -38,7 +38,7 @@ for(var i = 0; i < size; i++) {
             value: value,
             mutable: mutable,
             bold: bold,
-            isClicked: false
+            state: ' ' // Null, Cell-clicked, or Cell-involved
         });
     }
     rows.push({
@@ -53,53 +53,74 @@ class Table extends Component {
         super(props);
         this.state = {
             rows: rows,
-            selectedNum: this.props.state.selectedNum
+            selectedCoordinate: ' ',
+            selectedCoordinateTS: ' '
         }
         this.muteAll = this.muteAll.bind(this);
-        this.aimed = this.aimed.bind(this);
     }
 
     muteAll(exceptCoordinate) {
+        var squaresHashTable = {};
+        var involvedKey = '';
         for(var row of this.state.rows) {
             for(var cell of row.cells) {
+                // Logic to highlight involved 3x3 square
+                let x = Math.floor(parseInt(cell.coordinate.charAt(2))/3);
+                let y = Math.floor(parseInt(cell.coordinate.charAt(0))/3);
+                let squareKey = x.toString()+y.toString();
+                if(!(squareKey in squaresHashTable)) {
+                    squaresHashTable[squareKey] = [];
+                }
+                squaresHashTable[squareKey].push(cell);
+                // Logic to highlight clicked cell and involved row and column
                 if(cell.coordinate === exceptCoordinate) {
-                    cell.isClicked = true;
+                    involvedKey = squareKey;
+                    cell.state = 'Cell-clicked';
+                } else if (cell.coordinate.charAt(0) === exceptCoordinate.charAt(0) || cell.coordinate.charAt(2) === exceptCoordinate.charAt(2)) {
+                    cell.state = 'Cell-involved';
                 } else {
-                    cell.isClicked = false;
+                    cell.state = ' ';
                 }
             }
         }
+        for(var involvedCell of squaresHashTable[involvedKey]) {
+            if(involvedCell.coordinate !== exceptCoordinate) {
+                involvedCell.state = 'Cell-involved';
+            }
+        }
+        // Avoid reactivating the num bar on every render
         if(firstTouch) {
             this.props.activateNumBar(); // Activate Numbers bar
             firstTouch = false;
         }
         // Render the page by changing the state of rows
         this.setState(state => ({
-            rows: state.rows
+            rows: state.rows,
+            selectedCoordinate: exceptCoordinate,
+            selectedCoordinateTS: Date.now()
         }));
     }
 
-    aimed(coordinate) {
+    updateCell(coordinate, value) {
         for(var row of this.state.rows) {
             for(var cell of row.cells) {
                 if(cell.coordinate === coordinate) {
-                    cell.value = this.props.state.selectedNum;
-                    break;
-                } 
+                    cell.value = value;
+                }
             }
         }
-        // Render the page by changing the state of rows
-        this.setState(state => ({
-            rows: state.rows
-        }));
+        console.log(Solver.isValidBoard(this.state.rows));
     }
 
     render() {
+        if(this.props.state.selectedNumTS > this.state.selectedCoordinateTS) {
+            this.updateCell(this.state.selectedCoordinate, this.props.state.selectedNum);
+        }
         return (
             <table>
                 <tbody id="table-body" className="Table-body">
                     {this.state.rows.map((row) => {
-                        return <Row key={row.key} cells={row.cells} muteAll={this.muteAll} aimed={this.aimed} />
+                        return <Row key={row.key} cells={row.cells} muteAll={this.muteAll} />
                     })}
                 </tbody>
             </table>
