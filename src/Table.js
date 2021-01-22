@@ -64,13 +64,15 @@ class Table extends Component {
         var involvedKey = '';
         for(var row of this.state.rows) {
             for(var cell of row.cells) {
-                let x = Math.floor(parseInt(cell.coordinate.charAt(0))/3);
-                let y = Math.floor(parseInt(cell.coordinate.charAt(2))/3);
+                // Logic to highlight involved 3x3 square
+                let x = Math.floor(parseInt(cell.coordinate.charAt(2))/3);
+                let y = Math.floor(parseInt(cell.coordinate.charAt(0))/3);
                 let squareKey = x.toString()+y.toString();
                 if(!(squareKey in squaresHashTable)) {
                     squaresHashTable[squareKey] = [];
                 }
-                squaresHashTable[squareKey].push(cell)
+                squaresHashTable[squareKey].push(cell);
+                // Logic to highlight clicked cell and involved row and column
                 if(cell.coordinate === exceptCoordinate) {
                     involvedKey = squareKey;
                     cell.state = 'Cell-clicked';
@@ -107,6 +109,7 @@ class Table extends Component {
                 }
             }
         }
+        console.log(Solver.isValidBoard(this.state.rows));
     }
 
     render() {
