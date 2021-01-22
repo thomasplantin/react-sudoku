@@ -14,23 +14,15 @@ class Cell extends Component {
 
     render() {
         if(this.props.cell.mutable) {
-            if(this.props.cell.isClicked) {
-                return (
-                    <td className={`Table-cell ${this.props.cell.bold} Cell-clicked`}>
-                        <input className="Cell-input" type="button" value={this.props.cell.value} onClick={this.handleClick} />
-                    </td>
-                );
-            } else {
-                return (
-                    <td className={`Table-cell ${this.props.cell.bold}`}>
-                        <input className="Cell-input" type="button" value={this.props.cell.value} onClick={this.handleClick} />
-                    </td>
-                );
-            }
+            return (
+                <td className={`Table-cell ${this.props.cell.bold}`}>
+                    <input className={`Cell-input ${this.props.cell.state}`} type="button" value={this.props.cell.value} onClick={this.handleClick} />
+                </td>
+            );
         } else {
             return (
                 <td className={`Table-cell ${this.props.cell.bold}`}>
-                    <input className="Cell-input Cell-immutable" type="button" value={this.props.cell.value} disabled />
+                    <input className={`Cell-input Cell-immutable ${this.props.cell.state}`} type="button" value={this.props.cell.value} disabled />
                 </td>
             );
         }

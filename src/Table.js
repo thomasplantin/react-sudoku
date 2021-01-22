@@ -38,7 +38,7 @@ for(var i = 0; i < size; i++) {
             value: value,
             mutable: mutable,
             bold: bold,
-            isClicked: false
+            state: ' ' // Null, Cell-clicked, or Cell-involved
         });
     }
     rows.push({
@@ -60,14 +60,30 @@ class Table extends Component {
     }
 
     muteAll(exceptCoordinate) {
-        // this.props.activateCell(exceptCoordinate);
+        var squaresHashTable = {};
+        var involvedKey = '';
         for(var row of this.state.rows) {
             for(var cell of row.cells) {
-                if(cell.coordinate === exceptCoordinate) {
-                    cell.isClicked = true;
-                } else {
-                    cell.isClicked = false;
+                let x = Math.floor(parseInt(cell.coordinate.charAt(0))/3);
+                let y = Math.floor(parseInt(cell.coordinate.charAt(2))/3);
+                let squareKey = x.toString()+y.toString();
+                if(!(squareKey in squaresHashTable)) {
+                    squaresHashTable[squareKey] = [];
                 }
+                squaresHashTable[squareKey].push(cell)
+                if(cell.coordinate === exceptCoordinate) {
+                    involvedKey = squareKey;
+                    cell.state = 'Cell-clicked';
+                } else if (cell.coordinate.charAt(0) === exceptCoordinate.charAt(0) || cell.coordinate.charAt(2) === exceptCoordinate.charAt(2)) {
+                    cell.state = 'Cell-involved';
+                } else {
+                    cell.state = ' ';
+                }
+            }
+        }
+        for(var involvedCell of squaresHashTable[involvedKey]) {
+            if(involvedCell.coordinate !== exceptCoordinate) {
+                involvedCell.state = 'Cell-involved';
             }
         }
         // Avoid reactivating the num bar on every render
