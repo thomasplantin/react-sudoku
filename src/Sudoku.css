@@ -71,7 +71,8 @@
 }
 
 .Cell-clicked {
-  background-color: #ea2c62;
+  /* background-color: #ea2c62; */
+  background-color: greenyellow;
   color: #eeeded;
 }
 
