@@ -151,7 +151,7 @@ export function fillGrid(grid) {
 }
 
 export function stripValues(grid) {
-    var attempts = 5;
+    var attempts = 3;
     counter = 1;
     while(attempts > 0) {
         var row = Math.floor(Math.random()*9);
@@ -180,47 +180,45 @@ export function stripValues(grid) {
 }
 
 export function isValidBoard(board) {
-    var tabRows = {};
-    var tabCols = {};
-    var tabSquares = {};
+    const obj = {
+        tabRows: {},
+        tabCols: {},
+        tabSquares: {}
+    };
     for(var row of board) {
         for(var cell of row.cells) {
             if(cell.value !== ' ') {
-                console.log(cell.value);
-                let rowNumber = parseInt(cell.coordinate.charAt(0));
-                let colNumber = parseInt(cell.coordinate.charAt(2));
+                let rowNumber = cell.coordinate.charAt(0);
+                let colNumber = cell.coordinate.charAt(2);
                 // Check that in each row there are no 2 cells with repeating values
-                if(!(rowNumber in tabRows)) {
-                    tabRows[rowNumber] = [];
-                    tabRows[rowNumber].push(cell.value);
-                } else if(!(cell.value in tabRows[rowNumber])){
-                    tabRows[rowNumber].push(cell.value);
+                if(!obj.tabRows.hasOwnProperty(rowNumber)) {
+                    obj.tabRows[rowNumber] = [];
+                    obj.tabRows[rowNumber].push(cell.value);
+                } else if(!obj.tabRows[rowNumber].includes(cell.value)){
+                    obj.tabRows[rowNumber].push(cell.value);
                 } else {
-                    console.log("Problem in rows", cell.value, cell.coordinate);
                     return false;
                 }
                 // Check that in each column there are no 2 cells with repeating values
-                if(!(colNumber in tabCols)) {
-                    tabCols[colNumber] = [];
-                    tabCols[colNumber].push(cell.value);
-                } else if(!(cell.value in tabCols[colNumber])) {
-                    tabCols[colNumber].push(cell.value);
+                if(!obj.tabCols.hasOwnProperty(colNumber)) {
+                    obj.tabCols[colNumber] = [];
+                    obj.tabCols[colNumber].push(cell.value);
+                } else if(!obj.tabCols[colNumber].includes(cell.value)) {
+                    obj.tabCols[colNumber].push(cell.value);
                 } else {
-                    console.log("Problem in cols", cell.value, cell.coordinate);
                     return false;
                 }
                 // Check that in each 3x3 square there are no 2 cells with repeating values
-                let x = Math.floor(colNumber/3);
-                let y = Math.floor(rowNumber/3);
-                let squareKey = x.toString()+y.toString();
-                if(!(squareKey in tabSquares)) {
-                    tabSquares[squareKey] = [];
-                    tabSquares[squareKey].push(cell.value);
-                } else if(!(cell.value in tabSquares[squareKey])) {
-                    tabSquares[squareKey].push(cell.value);
-                } else{
-                    console.log("Problem in squares", cell.value, cell.coordinate);
-                    return false
+                let x = Math.floor(parseInt(colNumber)/3);
+                let y = Math.floor(parseInt(rowNumber)/3);
+                let squareKey = `${x}${y}`;
+                if(!obj.tabSquares.hasOwnProperty(squareKey)) {
+                    obj.tabSquares[squareKey] = [];
+                    obj.tabSquares[squareKey].push(cell.value);
+                } else if(!obj.tabSquares[squareKey].includes(cell.value)) {
+                    obj.tabSquares[squareKey].push(cell.value);
+                } else {
+                    return false;
                 }
             }
         }
