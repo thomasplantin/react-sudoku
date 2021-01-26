@@ -96,3 +96,15 @@
   background-color: #6930c3;
   color: white;
 }
+
+.Refresh-btn {
+  font-family: 'Potta One', cursive;
+  margin: 5px 0 10px;
+  background-color: #64dfdf;
+  border: 0;
+}
+
+.Refresh-btn:hover {
+  background-color: #6930c3;
+  color: white;
+}

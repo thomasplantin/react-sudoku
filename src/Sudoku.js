@@ -31,6 +31,7 @@ class Sudoku extends Component {
             <div className="Main">
                 <header className="App-header">
                     <h1 className="Main-title">React Sudoku</h1>
+                    <button className="Refresh-btn btn btn-light" onClick={() => window.location.reload(false)}>New Game</button>
                     <Table state={this.state} activateNumBar={this.activateNumBar} />
                     <Options state={this.state} numClick={this.numClick} enabled={this.props.state.numsEnabled}/>
                 </header>
